@@ -69,15 +69,5 @@
     "type": "string",
     "defaultValue": "12px",
     "placeholder": "e.g. 12px, 6px, 0px, 20px"
-  },
-  {
-    "type": "separator",
-    "label": "Web Content (Experimental)"
-  },
-  {
-    "property": "zen-custom-borders.web-content",
-    "label": "Apply custom borders to websites",
-    "type": "checkbox",
-    "defaultValue": false
   }
 ]

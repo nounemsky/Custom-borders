@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Custom Borders
-// @description     Synchronizes custom border-radius properties globally across browser windows, dialogs, urlbar, folders, workspaces, about:* settings pages and optionally websites.
+// @description     Synchronizes custom border-radius properties globally across browser windows, dialogs, urlbar, folders, workspaces and about:* settings pages.
 // @author          nounemsky
 // @version         1.0.0
 // ==/UserScript==
@@ -14,8 +14,7 @@
     { name: "zen-custom-borders.tabs", prop: "--zen-custom-borders-tabs", def: "8px", type: "string" },
     { name: "zen-custom-borders.workspaces", prop: "--zen-custom-borders-workspaces", def: "8px", type: "string" },
     { name: "zen-custom-borders.popups", prop: "--zen-custom-borders-popups", def: "10px", type: "string" },
-    { name: "zen-custom-borders.notifications", prop: "--zen-custom-borders-notifications", def: "12px", type: "string" },
-    { name: "zen-custom-borders.web-content", prop: "--zen-custom-borders-web-content", def: false, type: "bool" }
+    { name: "zen-custom-borders.notifications", prop: "--zen-custom-borders-notifications", def: "12px", type: "string" }
   ];
 
   function getPrefVal(pref) {
@@ -27,51 +26,6 @@
     } catch (e) {
       return pref.def;
     }
-  }
-
-  function registerActor() {
-    try {
-      const profileDir = Services.dirsvc.get("ProfD", Ci.nsIFile);
-      let modDir = profileDir.clone();
-      for (const seg of ["chrome", "sine-mods", "Custom-borders"]) modDir.append(seg);
-      if (!modDir.exists()) {
-        modDir = profileDir.clone();
-        for (const seg of ["chrome", "sine-mods", "ZenMods-Custom-borders"]) modDir.append(seg);
-      }
-
-      const modUri = Services.io.newFileURI(modDir);
-      const resProto = Services.io
-        .getProtocolHandler("resource")
-        .QueryInterface(Ci.nsIResProtocolHandler);
-      if (!resProto.hasSubstitution("zen-custom-borders")) {
-        resProto.setSubstitution("zen-custom-borders", modUri);
-      }
-
-      ChromeUtils.registerWindowActor("CustomBorders", {
-        parent: {
-          esModuleURI: "resource://zen-custom-borders/CustomBordersParent.sys.mjs",
-        },
-        child: {
-          esModuleURI: "resource://zen-custom-borders/CustomBordersChild.sys.mjs",
-          events: {
-            DOMContentLoaded: {},
-            pageshow: {},
-          },
-        },
-        messageManagerGroups: ["browsers"],
-        allFrames: true,
-        safeForUntrustedWebProcess: true,
-      });
-    } catch (err) {
-      if (err?.name !== "NotSupportedError") {
-        console.error("[Custom-borders] Error registering window actor:", err);
-      }
-    }
-  }
-
-  if (!ChromeUtils.customBordersActorRegistered) {
-    ChromeUtils.customBordersActorRegistered = true;
-    registerActor();
   }
 
   function generateUserContentCSS(values) {
@@ -190,22 +144,6 @@
     } catch (e) {}
   }
 
-  function broadcastWebContentConfig(values) {
-    try {
-      const enabled = getPrefVal(PREFS[0]);
-      const webContent = getPrefVal(PREFS[8]);
-      const buttons = values["zen-custom-borders.buttons"] || "8px";
-      const inputs = values["zen-custom-borders.inputs"] || "8px";
-
-      Services.ppmm.broadcastAsyncMessage("CustomBorders:BroadcastConfig", {
-        enabled,
-        webContent,
-        buttons,
-        inputs
-      });
-    } catch (e) {}
-  }
-
   function applyToDocument(doc) {
     if (!doc || !doc.documentElement) return;
     try {
@@ -303,7 +241,6 @@
         applyToDocument(win.document);
       }
 
-      broadcastWebContentConfig(values);
       syncUserContentCSS(values);
     } catch (e) {
       console.error("[Custom-borders]: Error updating windows:", e);
