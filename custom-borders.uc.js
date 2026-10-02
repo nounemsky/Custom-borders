@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Custom Borders
-// @description     Synchronizes custom border-radius properties globally across browser windows, dialogs, urlbar, folders, workspaces and about:* settings pages.
+// @description     Synchronizes custom border-radius properties globally across browser windows, dialogs, urlbar, folders, workspaces, about:* settings pages and optionally websites.
 // @author          nounemsky
 // @version         1.0.0
 // ==/UserScript==
@@ -14,7 +14,8 @@
     { name: "zen-custom-borders.tabs", prop: "--zen-custom-borders-tabs", def: "8px", type: "string" },
     { name: "zen-custom-borders.workspaces", prop: "--zen-custom-borders-workspaces", def: "8px", type: "string" },
     { name: "zen-custom-borders.popups", prop: "--zen-custom-borders-popups", def: "10px", type: "string" },
-    { name: "zen-custom-borders.notifications", prop: "--zen-custom-borders-notifications", def: "12px", type: "string" }
+    { name: "zen-custom-borders.notifications", prop: "--zen-custom-borders-notifications", def: "12px", type: "string" },
+    { name: "zen-custom-borders.web-content", prop: "--zen-custom-borders-web-content", def: false, type: "bool" }
   ];
 
   function getPrefVal(pref) {
@@ -28,10 +29,189 @@
     }
   }
 
+  function registerActor() {
+    try {
+      const profileDir = Services.dirsvc.get("ProfD", Ci.nsIFile);
+      let modDir = profileDir.clone();
+      for (const seg of ["chrome", "sine-mods", "Custom-borders"]) modDir.append(seg);
+      if (!modDir.exists()) {
+        modDir = profileDir.clone();
+        for (const seg of ["chrome", "sine-mods", "ZenMods-Custom-borders"]) modDir.append(seg);
+      }
+
+      const modUri = Services.io.newFileURI(modDir);
+      const resProto = Services.io
+        .getProtocolHandler("resource")
+        .QueryInterface(Ci.nsIResProtocolHandler);
+      if (!resProto.hasSubstitution("zen-custom-borders")) {
+        resProto.setSubstitution("zen-custom-borders", modUri);
+      }
+
+      ChromeUtils.registerWindowActor("CustomBorders", {
+        parent: {
+          esModuleURI: "resource://zen-custom-borders/CustomBordersParent.sys.mjs",
+        },
+        child: {
+          esModuleURI: "resource://zen-custom-borders/CustomBordersChild.sys.mjs",
+          events: {
+            DOMContentLoaded: {},
+            pageshow: {},
+          },
+        },
+        messageManagerGroups: ["browsers"],
+        allFrames: true,
+        safeForUntrustedWebProcess: true,
+      });
+    } catch (err) {
+      if (err?.name !== "NotSupportedError") {
+        console.error("[Custom-borders] Error registering window actor:", err);
+      }
+    }
+  }
+
+  if (!ChromeUtils.customBordersActorRegistered) {
+    ChromeUtils.customBordersActorRegistered = true;
+    registerActor();
+  }
+
+  function generateUserContentCSS(values) {
+    const btn = values["zen-custom-borders.buttons"] || "8px";
+    const inp = values["zen-custom-borders.inputs"] || "8px";
+    const pop = values["zen-custom-borders.popups"] || "10px";
+    const notif = values["zen-custom-borders.notifications"] || "12px";
+
+    return `/* ==========================================================================
+   Custom Borders for Zen Browser (In-Content Pages)
+   Author: nounemsky | Version: 1.0.0
+   ========================================================================== */
+
+@-moz-document url-prefix("about:"),
+               url-prefix("chrome://") {
+
+  :root {
+    --button-border-radius: ${btn} !important;
+    --toolbarbutton-border-radius: ${btn} !important;
+    --input-border-radius: ${inp} !important;
+    --border-radius-xsmall: ${btn} !important;
+    --border-radius-small: ${btn} !important;
+    --border-radius-medium: ${btn} !important;
+    --border-radius-large: ${pop} !important;
+    --border-radius-circle: ${btn} !important;
+    --card-border-radius: ${pop} !important;
+    --in-content-button-border-radius: ${btn} !important;
+    --panel-item-button-border-radius: ${btn} !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    --button-border-radius: ${btn} !important;
+    --input-border-radius: ${inp} !important;
+    --in-content-button-border-radius: ${btn} !important;
+  }
+
+  /* Buttons in Settings */
+  button,
+  button:not(#unreal),
+  moz-button,
+  moz-button::part(button),
+  button.primary,
+  button.ghost-button,
+  button[is="highlightable-button"],
+  moz-page-nav-button,
+  .dialog-button,
+  .button-box,
+  .accessory-button,
+  .category,
+  .zen-theme-item-btn,
+  .sineItemPreferenceToggle,
+  moz-toggle::part(toggle),
+  [role="button"] {
+    border-radius: ${btn} !important;
+  }
+
+  /* Inputs in Settings */
+  input,
+  input:not([type="checkbox"]):not([type="radio"]),
+  input[type="text"],
+  input[type="search"],
+  input[type="password"],
+  input[type="number"],
+  input[type="email"],
+  input[type="url"],
+  textarea,
+  select,
+  moz-input-box,
+  moz-input-box::part(input),
+  menulist,
+  .search-container input,
+  #searchInput {
+    border-radius: ${inp} !important;
+  }
+
+  /* Dialogs & Messages */
+  message-bar,
+  message-bar::part(container),
+  .message-bar,
+  notification-message,
+  .notification-box,
+  dialog,
+  .dialogBox {
+    border-radius: ${notif} !important;
+  }
+
+  /* Cards */
+  addon-card,
+  .addon-card,
+  .card,
+  .zen-theme-item,
+  .zen-mod-card,
+  .sineItem {
+    border-radius: ${pop} !important;
+  }
+}
+`;
+  }
+
+  async function syncUserContentCSS(values) {
+    try {
+      const profileDir = Services.dirsvc.get("ProfD", Ci.nsIFile);
+      let file = profileDir.clone();
+      for (const seg of ["chrome", "sine-mods", "Custom-borders", "userContent.css"]) file.append(seg);
+      if (!file.exists()) {
+        file = profileDir.clone();
+        for (const seg of ["chrome", "sine-mods", "ZenMods-Custom-borders", "userContent.css"]) file.append(seg);
+      }
+      if (file.exists()) {
+        const css = generateUserContentCSS(values);
+        await IOUtils.writeUTF8(file.path, css);
+        Services.ppmm.broadcastAsyncMessage("RebuildUserStyles", {});
+      }
+    } catch (e) {}
+  }
+
+  function broadcastWebContentConfig(values) {
+    try {
+      const enabled = getPrefVal(PREFS[0]);
+      const webContent = getPrefVal(PREFS[8]);
+      const buttons = values["zen-custom-borders.buttons"] || "8px";
+      const inputs = values["zen-custom-borders.inputs"] || "8px";
+
+      Services.ppmm.broadcastAsyncMessage("CustomBorders:BroadcastConfig", {
+        enabled,
+        webContent,
+        buttons,
+        inputs
+      });
+    } catch (e) {}
+  }
+
   function applyToDocument(doc) {
     if (!doc || !doc.documentElement) return;
     try {
       const enabled = getPrefVal(PREFS[0]);
+      const isChrome = doc.location && doc.location.href.startsWith("chrome://browser/content/browser.xhtml");
+
       if (!enabled) {
         doc.documentElement.removeAttribute("zen-custom-borders-active");
         for (const pref of PREFS.slice(1)) {
@@ -50,7 +230,6 @@
         doc.documentElement.style.setProperty(pref.prop, val);
       }
 
-      const isChrome = doc.location && doc.location.href.startsWith("chrome://browser/content/browser.xhtml");
       if (isChrome) {
         let styleEl = doc.getElementById("zen-custom-borders-runtime-override");
         if (!styleEl) {
@@ -108,28 +287,24 @@
           }
         `;
       }
-    } catch (err) {
-      // Ignore cross-origin frame errors
-    }
+    } catch (err) {}
   }
 
   function updateAllWindows() {
     try {
+      const values = {};
+      for (const pref of PREFS.slice(1)) {
+        values[pref.name] = getPrefVal(pref);
+      }
+
       const windows = Services.wm.getEnumerator(null);
       while (windows.hasMoreElements()) {
         const win = windows.getNext();
         applyToDocument(win.document);
-
-        if (win.gBrowser && win.gBrowser.browsers) {
-          for (const browser of win.gBrowser.browsers) {
-            try {
-              if (browser.contentDocument) {
-                applyToDocument(browser.contentDocument);
-              }
-            } catch (e) {}
-          }
-        }
       }
+
+      broadcastWebContentConfig(values);
+      syncUserContentCSS(values);
     } catch (e) {
       console.error("[Custom-borders]: Error updating windows:", e);
     }
@@ -148,18 +323,6 @@
   window.addEventListener("DOMContentLoaded", (e) => {
     applyToDocument(e.target);
   }, true);
-
-  if (window.gBrowser) {
-    window.gBrowser.addTabsProgressListener({
-      onLocationChange: (browser) => {
-        try {
-          if (browser && browser.contentDocument) {
-            applyToDocument(browser.contentDocument);
-          }
-        } catch (e) {}
-      }
-    });
-  }
 
   updateAllWindows();
 })();

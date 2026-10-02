@@ -3,95 +3,88 @@
    Author: nounemsky | Version: 1.0.0
    ========================================================================== */
 
-:root {
-  --zen-cb-buttons: var(--zen-custom-borders-buttons, 8px);
-  --zen-cb-inputs: var(--zen-custom-borders-inputs, 8px);
-  --zen-cb-popups: var(--zen-custom-borders-popups, 10px);
-  --zen-cb-notifications: var(--zen-custom-borders-notifications, var(--zen-cb-popups, 12px));
+@-moz-document url-prefix("about:"),
+               url-prefix("chrome://") {
 
-  --button-border-radius: var(--zen-cb-buttons) !important;
-  --toolbarbutton-border-radius: var(--zen-cb-buttons) !important;
-  --input-border-radius: var(--zen-cb-inputs) !important;
-  --border-radius-xsmall: var(--zen-cb-buttons) !important;
-  --border-radius-small: var(--zen-cb-buttons) !important;
-  --border-radius-medium: var(--zen-cb-buttons) !important;
-  --border-radius-large: var(--zen-cb-popups) !important;
-  --border-radius-circle: var(--zen-cb-buttons) !important;
-  --card-border-radius: var(--zen-cb-popups) !important;
-  --in-content-button-border-radius: var(--zen-cb-buttons) !important;
-  --panel-item-button-border-radius: var(--zen-cb-buttons) !important;
-}
+  :root {
+    --button-border-radius: 2px !important;
+    --toolbarbutton-border-radius: 2px !important;
+    --input-border-radius: 2px !important;
+    --border-radius-xsmall: 2px !important;
+    --border-radius-small: 2px !important;
+    --border-radius-medium: 2px !important;
+    --border-radius-large: 2px !important;
+    --border-radius-circle: 2px !important;
+    --card-border-radius: 2px !important;
+    --in-content-button-border-radius: 2px !important;
+    --panel-item-button-border-radius: 2px !important;
+  }
 
-*,
-*::before,
-*::after {
-  --button-border-radius: var(--zen-cb-buttons) !important;
-  --input-border-radius: var(--zen-cb-inputs) !important;
-  --in-content-button-border-radius: var(--zen-cb-buttons) !important;
-}
+  *,
+  *::before,
+  *::after {
+    --button-border-radius: 2px !important;
+    --input-border-radius: 2px !important;
+    --in-content-button-border-radius: 2px !important;
+  }
 
-@media (-moz-pref("zen-custom-borders.enabled")) {
-  @-moz-document url-prefix("about:"),
-                 url-prefix("chrome://") {
+  /* Buttons in Settings */
+  button,
+  button:not(#unreal),
+  moz-button,
+  moz-button::part(button),
+  button.primary,
+  button.ghost-button,
+  button[is="highlightable-button"],
+  moz-page-nav-button,
+  .dialog-button,
+  .button-box,
+  .accessory-button,
+  .category,
+  .zen-theme-item-btn,
+  .sineItemPreferenceToggle,
+  moz-toggle::part(toggle),
+  [role="button"] {
+    border-radius: 2px !important;
+  }
 
-    /* Buttons */
-    button,
-    button:not(#unreal),
-    moz-button,
-    moz-button::part(button),
-    button.primary,
-    button.ghost-button,
-    button[is="highlightable-button"],
-    moz-page-nav-button,
-    .dialog-button,
-    .button-box,
-    .accessory-button,
-    .category,
-    .zen-theme-item-btn,
-    .sineItemPreferenceToggle,
-    moz-toggle::part(toggle),
-    [role="button"] {
-      border-radius: var(--zen-cb-buttons) !important;
-    }
+  /* Inputs in Settings */
+  input,
+  input:not([type="checkbox"]):not([type="radio"]),
+  input[type="text"],
+  input[type="search"],
+  input[type="password"],
+  input[type="number"],
+  input[type="email"],
+  input[type="url"],
+  textarea,
+  select,
+  moz-input-box,
+  moz-input-box::part(input),
+  menulist,
+  .search-container input,
+  #searchInput {
+    border-radius: 2px !important;
+  }
 
-    /* Inputs */
-    input,
-    input:not([type="checkbox"]):not([type="radio"]),
-    input[type="text"],
-    input[type="search"],
-    input[type="password"],
-    input[type="number"],
-    input[type="email"],
-    input[type="url"],
-    textarea,
-    select,
-    moz-input-box,
-    moz-input-box::part(input),
-    menulist,
-    .search-container input,
-    #searchInput {
-      border-radius: var(--zen-cb-inputs) !important;
-    }
+  /* Dialogs & Messages */
+  message-bar,
+  message-bar::part(container),
+  .message-bar,
+  notification-message,
+  .notification-box,
+  dialog,
+  .dialogBox {
+    border-radius: 2px !important;
+  }
 
-    /* Dialogs & Messages */
-    message-bar,
-    message-bar::part(container),
-    .message-bar,
-    notification-message,
-    .notification-box,
-    dialog,
-    .dialogBox {
-      border-radius: var(--zen-cb-notifications) !important;
-    }
-
-    /* Cards */
-    addon-card,
-    .addon-card,
-    .card,
-    .zen-theme-item,
-    .zen-mod-card,
-    .sineItem {
-      border-radius: var(--zen-cb-popups) !important;
-    }
+  /* Cards */
+  addon-card,
+  .addon-card,
+  .card,
+  .zen-theme-item,
+  .zen-mod-card,
+  .sineItem {
+    border-radius: 2px !important;
   }
 }

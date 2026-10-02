@@ -10,6 +10,7 @@ A lightweight mod for Zen Browser that lets you customize the border radius of b
 - **Tabs & Folders**: Customize vertical tab radius and folder header containers.
 - **Workspaces**: Style workspace buttons and the active workspace indicator.
 - **Menus & Popups**: Configure border radius for context menus, panels, and popup notifications.
+- **Websites (Optional)**: Toggle custom border radius on buttons and inputs across external web pages.
 
 ## Values & Units
 
