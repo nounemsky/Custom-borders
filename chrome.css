@@ -1,0 +1,259 @@
+/* ==========================================================================
+   Custom Borders for Zen Browser
+   Author: nounemsky | Version: 1.0.0
+   ========================================================================== */
+
+:root {
+  --zen-cb-buttons: var(--zen-custom-borders-buttons, 8px);
+  --zen-cb-inputs: var(--zen-custom-borders-inputs, 8px);
+  --zen-cb-urlbar: var(--zen-custom-borders-urlbar, 10px);
+  --zen-cb-tabs: var(--zen-custom-borders-tabs, 8px);
+  --zen-cb-workspaces: var(--zen-custom-borders-workspaces, 8px);
+  --zen-cb-popups: var(--zen-custom-borders-popups, 10px);
+  --zen-cb-notifications: var(--zen-custom-borders-notifications, var(--zen-cb-popups, 12px));
+
+  --button-border-radius: var(--zen-cb-buttons) !important;
+  --toolbarbutton-border-radius: var(--zen-cb-buttons) !important;
+  --panel-item-button-border-radius: var(--zen-cb-buttons) !important;
+  --panel-menuitem-border-radius: var(--zen-cb-buttons) !important;
+  --urlbar-icon-border-radius: var(--zen-cb-buttons) !important;
+  --urlbar-border-radius: var(--zen-cb-urlbar) !important;
+  --urlbar-inner-border-radius: var(--zen-cb-urlbar) !important;
+  --tab-border-radius: var(--zen-cb-tabs) !important;
+  --panel-border-radius: var(--zen-cb-popups) !important;
+  --popup-border-radius: var(--zen-cb-popups) !important;
+  --arrowpanel-border-radius: var(--zen-cb-popups) !important;
+  --card-border-radius: var(--zen-cb-popups) !important;
+  --logins-dialog-border-radius: var(--zen-cb-notifications) !important;
+}
+
+*,
+*::before,
+*::after {
+  --button-border-radius: var(--zen-cb-buttons) !important;
+  --toolbarbutton-border-radius: var(--zen-cb-buttons) !important;
+  --urlbar-icon-border-radius: var(--zen-cb-buttons) !important;
+}
+
+@media (-moz-pref("zen-custom-borders.enabled")) {
+  /* Buttons & Action Items */
+  button,
+  toolbarbutton,
+  .toolbarbutton-1,
+  .toolbarbutton-icon,
+  .toolbarbutton-badge-stack,
+  .subviewbutton,
+  .subviewbutton-nav,
+  .dialog-button,
+  dialog::part(dialog-button),
+  .footer-button,
+  moz-button,
+  moz-button::part(button),
+  [role="button"],
+  .bookmark-item,
+  .urlbar-page-action,
+  .urlbar-icon,
+  .identity-box-button,
+  #identity-box,
+  #identity-icon-box,
+  #identity-permission-box,
+  #urlbar-search-button,
+  .tab-close-button,
+  .tab-icon-sound,
+  .tab-reset-button,
+  .zen-action-button,
+  .zen-big-accent-button,
+  .zen-interactive-button,
+  .zen-glance-button,
+  #zen-compact-mode-button,
+  #zen-sidepanel-button,
+  #zen-expand-sidebar-button,
+  #zen-sidebar-action-button,
+  #zen-sidebar-top-buttons toolbarbutton,
+  #zen-sidebar-bottom-buttons toolbarbutton,
+  #zen-media-control-button,
+  .zen-media-playback-buttons,
+  .zen-media-playpause-button,
+  .zen-media-close-button,
+  .zen-media-focus-button,
+  .zen-media-mute-button,
+  .zen-media-pip-button,
+  .zen-tab-rearrange-button,
+  .zen-tab-unsplit-button,
+  .zen-sidebar-notification-close-button,
+  .zen-permission-popup-boost-editor-button,
+  .popup-notification-button,
+  .popup-notification-primary-button,
+  .popup-notification-secondary-button,
+  .popup-notification-closebutton,
+  notification-message moz-button,
+  notification-message::part(button),
+  .notification-button,
+  #zen-toast-container .zen-toast button,
+  .toast-button,
+  .findbar-button,
+  .panel-footer button,
+  .panel-banner-item,
+  menulist,
+  .menulist-button,
+  #nav-bar toolbarbutton,
+  #TabsToolbar toolbarbutton,
+  #alltabs-button,
+  #unified-extensions-button,
+  #back-button,
+  #forward-button,
+  #reload-button,
+  #stop-button,
+  #home-button,
+  #downloads-button,
+  #fxa-toolbar-menu-button {
+    border-radius: var(--zen-cb-buttons) !important;
+  }
+
+  .toolbarbutton-1:hover,
+  .toolbarbutton-1:hover .toolbarbutton-icon,
+  .toolbarbutton-1:hover .toolbarbutton-badge-stack,
+  toolbarbutton:hover,
+  toolbarbutton:hover .toolbarbutton-icon,
+  toolbarbutton:hover .toolbarbutton-badge-stack,
+  .subviewbutton:hover,
+  .urlbar-page-action:hover {
+    border-radius: var(--zen-cb-buttons) !important;
+  }
+
+  /* Input Fields */
+  input,
+  input:not([type="checkbox"]):not([type="radio"]),
+  input[type="text"],
+  input[type="search"],
+  input[type="password"],
+  input[type="email"],
+  input[type="number"],
+  input[type="url"],
+  input[type="tel"],
+  textarea,
+  select,
+  textbox,
+  moz-input-box,
+  .findbar-textbox,
+  .searchbar-textbox,
+  findbar,
+  .findbar-container {
+    border-radius: var(--zen-cb-inputs) !important;
+  }
+
+  /* Address Bar (URL Bar) */
+  :root #urlbar,
+  :root .urlbar,
+  :root #urlbar-background,
+  :root .urlbar-background,
+  :root div.urlbar-background,
+  :root #urlbar-input-container,
+  :root .urlbar-input-container,
+  :root #urlbar-container,
+  :root #searchbar,
+  :root .searchbar-textbox,
+  :root #urlbar:not([breakout-extend]) > .urlbar-background,
+  :root #urlbar:not([breakout-extend]) > #urlbar-background,
+  :root #urlbar[breakout-extend] > .urlbar-background,
+  :root #urlbar[breakout-extend] > #urlbar-background,
+  :root #urlbar[breakout-extend="true"] > .urlbar-background,
+  :root #urlbar[breakout-extend="true"] > #urlbar-background,
+  :root #urlbar[open] > .urlbar-background,
+  :root #urlbar[open] > #urlbar-background,
+  :root #urlbar:is([breakout][breakout-extend], [breakout][usertyping][focused]) > .urlbar-background,
+  :root #urlbar:is([breakout][breakout-extend], [breakout][usertyping][focused]) > #urlbar-background,
+  :root #urlbar[breakout-extend][animate-searchmode="true"]::before,
+  :root #urlbar-container:has(#urlbar),
+  :root .urlbarView,
+  :root .urlbarView-body-outer,
+  :root .urlbarView-body-inner {
+    border-radius: var(--zen-cb-urlbar) !important;
+  }
+
+  :root .urlbarView-row,
+  :root .urlbarView-row-inner {
+    border-radius: calc(var(--zen-cb-urlbar) - 2px) !important;
+  }
+
+  /* Tabs & Folders */
+  .tabbrowser-tab,
+  .tab-background,
+  .tab-stack,
+  .tab-content,
+  zen-folder,
+  tab-group,
+  .tab-group-label,
+  .tab-group-label-container,
+  .tab-group-label-container::before,
+  .tab-group-label-container::after,
+  zen-folder > .tab-group-label-container,
+  zen-folder > .tab-group-label-container::before,
+  tab-group > .tab-group-label-container,
+  tab-group > .tab-group-label-container::before,
+  zen-folder[selected] > .tab-group-label-container::before,
+  tab-group[selected] > .tab-group-label-container::before,
+  .tab-group-label-container:hover::before,
+  .folders-tabs-list-item,
+  .folders-tabs-list-item-content {
+    border-radius: var(--zen-cb-tabs) !important;
+  }
+
+  /* Workspaces */
+  :root #zen-workspaces-button,
+  :root #zen-workspaces-button toolbarbutton,
+  :root #zen-workspaces-button toolbarbutton::before,
+  :root #zen-workspaces-button toolbarbutton::after,
+  :root #zen-workspaces-button toolbarbutton .toolbarbutton-icon,
+  :root #zen-workspaces-button toolbarbutton .toolbarbutton-badge-stack,
+  :root #zen-workspaces-button .zen-workspace-sidebar-wrapper,
+  :root #zen-workspaces-button .zen-workspace-icon,
+  :root .zen-current-workspace-indicator,
+  :root .zen-current-workspace-indicator::before,
+  :root .zen-current-workspace-indicator::after,
+  :root .zen-current-workspace-indicator-stack,
+  :root #zen-current-workspace-indicator,
+  :root #zen-current-workspace-indicator::before,
+  :root #zen-current-workspace-indicator::after,
+  :root .zen-workspace-button,
+  :root .zen-workspace-tab-item,
+  :root .zen-workspace-tab-item::before,
+  :root .zen-workspace-tab-item::after,
+  :root .zen-workspaces-actions toolbarbutton,
+  :root zen-workspace,
+  :root zen-workspace-creation,
+  :root .zen-workspace-creation-buttons button,
+  :root .zen-workspace-creation-edit-theme-button,
+  :root .zen-workspace-creation-name-wrapper,
+  :root .zen-workspace-creation-profile-wrapper,
+  :root .zen-workspace-close-unpinned-tabs-button {
+    border-radius: var(--zen-cb-workspaces) !important;
+  }
+
+  /* Popups & Menus */
+  menupopup,
+  panel,
+  .panel-arrowcontent {
+    border-radius: var(--zen-cb-popups) !important;
+  }
+
+  menupopup > menu,
+  menupopup > menuitem {
+    border-radius: calc(var(--zen-cb-popups) - 4px) !important;
+  }
+
+  /* Notifications, Dialogs & Toasts */
+  popupnotification,
+  .popup-notification-panel,
+  .popup-notification-body-container,
+  notification-message,
+  notificationbox,
+  #confirmation-hint,
+  #permission-popup,
+  #zen-toast-container .zen-toast,
+  .zen-toast,
+  dialog,
+  window[subdialog="true"] {
+    border-radius: var(--zen-cb-notifications) !important;
+  }
+}

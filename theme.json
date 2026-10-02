@@ -1,0 +1,30 @@
+{
+  "id": "Custom-borders",
+  "name": "Custom Borders",
+  "description": "Customize border-radius of buttons, inputs, urlbar, tabs, folders, and menus in Zen Browser.",
+  "author": "nounemsky",
+  "version": "1.0.0",
+  "homepage": "https://github.com/nounemsky/Custom-borders",
+  "image": "https://raw.githubusercontent.com/nounemsky/Custom-borders/main/image.png",
+  "style": {
+    "chrome": "chrome.css",
+    "content": "userContent.css"
+  },
+  "scripts": {
+    "custom-borders.uc.js": {
+      "include": ["chrome://browser/content/browser.xhtml"]
+    }
+  },
+  "preferences": "preferences.json",
+  "readme": "README.md",
+  "tags": [
+    "borders",
+    "rounding",
+    "buttons",
+    "inputs",
+    "tabs",
+    "customization",
+    "zen"
+  ],
+  "fork": ["zen"]
+}

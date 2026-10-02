@@ -1,0 +1,73 @@
+[
+  {
+    "property": "zen-custom-borders.enabled",
+    "label": "Enable Custom Borders",
+    "type": "checkbox",
+    "defaultValue": true
+  },
+  {
+    "type": "separator",
+    "label": "Global Elements"
+  },
+  {
+    "property": "zen-custom-borders.buttons",
+    "label": "Buttons border radius",
+    "type": "string",
+    "defaultValue": "8px",
+    "placeholder": "e.g. 8px, 4px, 0px, 9999px"
+  },
+  {
+    "property": "zen-custom-borders.inputs",
+    "label": "Inputs & search fields border radius",
+    "type": "string",
+    "defaultValue": "8px",
+    "placeholder": "e.g. 8px, 4px, 0px, 12px"
+  },
+  {
+    "type": "separator",
+    "label": "Address Bar & Navigation"
+  },
+  {
+    "property": "zen-custom-borders.urlbar",
+    "label": "URL bar (Omnibox) border radius",
+    "type": "string",
+    "defaultValue": "10px",
+    "placeholder": "e.g. 10px, 4px, 0px, 24px"
+  },
+  {
+    "type": "separator",
+    "label": "Tabs & Workspaces"
+  },
+  {
+    "property": "zen-custom-borders.tabs",
+    "label": "Tabs & folders border radius",
+    "type": "string",
+    "defaultValue": "8px",
+    "placeholder": "e.g. 8px, 4px, 0px, 16px"
+  },
+  {
+    "property": "zen-custom-borders.workspaces",
+    "label": "Workspaces border radius",
+    "type": "string",
+    "defaultValue": "8px",
+    "placeholder": "e.g. 8px, 4px, 0px, 50%"
+  },
+  {
+    "type": "separator",
+    "label": "Menus & Dialogs"
+  },
+  {
+    "property": "zen-custom-borders.popups",
+    "label": "Context menus & popup panels border radius",
+    "type": "string",
+    "defaultValue": "10px",
+    "placeholder": "e.g. 10px, 4px, 0px, 16px"
+  },
+  {
+    "property": "zen-custom-borders.notifications",
+    "label": "Notifications & modal dialogs border radius",
+    "type": "string",
+    "defaultValue": "12px",
+    "placeholder": "e.g. 12px, 6px, 0px, 20px"
+  }
+]
